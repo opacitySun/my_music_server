@@ -92,7 +92,7 @@ exports.findData = function(table,column,where,fields,callback) {
     }
     sql += ' limit '+skip+','+limit;
 
-    sql += ' order by updateTime desc';
+    sql += ' order by updatetime desc';
 
     db.query(sql,function(error,result){
         if(error) {

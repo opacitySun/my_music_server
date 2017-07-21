@@ -1,10 +1,9 @@
 var mysql = require('mysql');
 var pool = mysql.createPool({
     host : 'localhost',
-	user : 'root',
-	password : '123456',
-	database : 'my_music',
-	port : 3030
+	user : 'sunbowei',
+	password : 'Zg0B8Q%LuCSp54Kn',
+	database : 'my_music'
 });
 
 function query(sql, callback) {

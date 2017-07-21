@@ -11,12 +11,12 @@ module.exports = function(app){
     //登录
     app.all("/loginAction",function(req,res){
         var column = false;
-        var where = 'name='+req.body.loginName+' and password='+req.body.loginPwd;
+        var where = 'name='+req.body.loginName+' and pwd='+req.body.loginPwd;
         var fields = {};
         dbHelper.findData('user',column,where,fields,function(result){  
-            if(result.success == 1 && result.result.type == 0){
+            if(result.success == 1 && result.result.auth == 0){
                 req.session.username=result.result.name;          
-                req.session.password=result.result.password;
+                req.session.password=result.result.pwd;
                 req.session.regenerate(function (err) {
                     if(err){
                         console.log("session重新初始化失败.");
