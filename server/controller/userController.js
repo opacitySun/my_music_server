@@ -1,5 +1,4 @@
-var ObjectID = require("mongodb").ObjectID,
-    fs = require("fs"),
+var fs = require("fs"),
     dbHelper = require("../DBHelper/dbHelper"),
     uploadHelper = require("../DBHelper/uploadHelper");
 
