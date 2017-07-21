@@ -65,7 +65,17 @@ app.use("/ueditor/ue", ueditor(path.join(__dirname, 'public'), function(req, res
 //将express与控制器相关联来达到路由的目的
 routesController(app);
 
-app.use('/', routes);
+app.use(function(req,res,next){
+  if (!req.session.username) {
+    if(req.url == "/login"){
+      next(); //如果请求的地址是登录则通过，进行下一个请求
+    }else{
+      res.redirect('/login');
+    }
+  }else if(req.session.username) {
+    next();
+  }
+}, routes);
 app.use('/users', users);
 
 // catch 404 and forward to error handler

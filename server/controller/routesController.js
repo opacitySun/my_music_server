@@ -3,10 +3,8 @@
  *sun create in 2016.7.19
  */
 
-var user = require("./userController").outerConnectAction;
-var index = require("./indexController");
+var user = require("./userController");
 
 module.exports = function(app){
 	user(app);
-	index(app);
 }
