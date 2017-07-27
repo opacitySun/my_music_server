@@ -11,6 +11,9 @@ module.exports = function(app){
     app.all("/getMusicList",function(req,res){
         var column = false,where = false;
         var fields = {};
+        if(req.body.id){
+            where = 'id='+req.body.id;
+        }
         dbHelper.findData('music',column,where,fields,function(result){
             res.json(result);
         });
