@@ -11,10 +11,11 @@ module.exports = function(app){
     app.all("/getMusicList",function(req,res){
         var column = false,where = false;
         var fields = {};
-        if(req.body.id){
-            where = 'id='+req.body.id;
+        if(req.query.id){
+            where = 'id='+req.query.id;
         }
         dbHelper.findData('music',column,where,fields,function(result){
+            result['callback'] = req.query.callback;
             res.json(result);
         });
     });
