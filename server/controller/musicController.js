@@ -18,7 +18,7 @@ module.exports = function(app){
         dbHelper.findData('music',column,where,fields,function(result){
             if(_callback){
                 res.type('text/javascript');
-                res.send('(' + JSON.stringify(result) + ')');
+                res.send(_callback + '(' + JSON.stringify(result) + ')');
             }else{
                 res.json(result);
             }
