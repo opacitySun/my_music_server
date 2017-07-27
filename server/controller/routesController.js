@@ -3,8 +3,10 @@
  *sun create in 2016.7.19
  */
 
-var user = require("./userController");
+var user = require("./userController"),
+	music = require("./musicController");
 
 module.exports = function(app){
 	user(app);
+	music(app);
 }
