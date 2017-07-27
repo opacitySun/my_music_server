@@ -12,7 +12,6 @@ module.exports = function(app){
         var column = false,where = false;
         var fields = {};
         dbHelper.findData('music',column,where,fields,function(result){
-            result = userResult;
             res.json(result);
         });
     });
