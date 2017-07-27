@@ -9,14 +9,19 @@ var fs = require("fs"),
 module.exports = function(app){
     //查找音乐列表
     app.all("/getMusicList",function(req,res){
+        var _callback = req.query.callback;
         var column = false,where = false;
         var fields = {};
         if(req.query.id){
             where = 'id='+req.query.id;
         }
         dbHelper.findData('music',column,where,fields,function(result){
-            result['callback'] = req.query.callback;
-            res.json(result);
+            if(_callback){
+                res.type('text/javascript');
+                res.send(_callback + '(' + JSON.stringify(result) + ')');
+            }else{
+                res.json(result);
+            }
         });
     });
 }
