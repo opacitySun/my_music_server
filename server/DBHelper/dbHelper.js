@@ -82,6 +82,8 @@ exports.findData = function(table,column,where,fields,callback) {
         sql += ' where '+where;
     }
 
+    sql += ' order by updatetime desc';
+
     var skip,limit;
     if(fields.currentPage){
         skip = (fields.currentPage-1)*fields.pageSize;
@@ -91,8 +93,6 @@ exports.findData = function(table,column,where,fields,callback) {
         limit = 1000;
     }
     sql += ' limit '+skip+','+limit;
-
-    sql += ' order by updatetime desc';
 
     db.query(sql,function(error,result){
         if(error) {
