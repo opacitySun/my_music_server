@@ -7,7 +7,7 @@ var fs = require("fs"),
  * @returns {Function}  
  */ 
 module.exports = function(app){
-    //查找用户列表
+    //查找音乐列表
     app.all("/getMusicList",function(req,res){
         var column = false,where = false;
         var fields = {};
