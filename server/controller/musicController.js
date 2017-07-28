@@ -8,7 +8,7 @@ var fs = require("fs"),
  */ 
 module.exports = function(app){
     var getFileContent = function(path){
-        path = "../../public/files/"+path;
+        path = "./public/files/"+path;
         fs.open(path, 'r', function(err, fd) {
             if (err) {
                 throw err;

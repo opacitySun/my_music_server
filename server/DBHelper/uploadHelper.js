@@ -1,7 +1,7 @@
 var multer  = require('multer');
 var storage = multer.diskStorage({  
   destination: function (req, file, cb) {  //上传路径
-    cb(null, './public/resources/');
+    cb(null, './public/files/');
   },
   filename: function (req, file, cb) {  
   	var rename = function(){
