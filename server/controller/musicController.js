@@ -1,5 +1,4 @@
 var fs = require("fs"),
-    url = require("url"),
     dbHelper = require("../DBHelper/dbHelper"),
     uploadHelper = require("../DBHelper/uploadHelper");
 
@@ -9,6 +8,7 @@ var fs = require("fs"),
  */ 
 module.exports = function(app){
     var getFileContent = function(path){
+        path = "../../public/files/"+path;
         fs.open(path, 'r', function(err, fd) {
             if (err) {
                 throw err;
@@ -38,10 +38,11 @@ module.exports = function(app){
             where = 'id='+req.query.id;
         }
         dbHelper.findData('music',column,where,fields,function(result){
-            result.result.forEach(function(obj){
-                var fileName = url.parse(obj.lyric).pathname;
-                getFileContent(fileName);
-            });
+            if(req.query.id){
+                result.result.forEach(function(obj){
+                    getFileContent(obj.lyric);
+                });
+            }
             if(_callback){
                 res.type('text/javascript');
                 res.send(_callback + '(' + JSON.stringify(result) + ')');
