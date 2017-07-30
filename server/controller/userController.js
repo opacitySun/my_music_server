@@ -42,7 +42,7 @@ module.exports = function(app){
         var column = false,where = false;
         var fields = {};
         dbHelper.findData('user',column,where,fields,function(userResult){
-            result = userResult;
+            var result = userResult;
             dbHelper.findData('user_type',column,where,fields,function(userTypeResult){  
                 result.result.forEach(function(obj){
                     userTypeResult.result.forEach(function(o){
@@ -61,7 +61,8 @@ module.exports = function(app){
         var column = false,where = 'user_uuid='+req.query.uuid;
         var fields = {};
         dbHelper.findData('user_info',column,where,fields,function(userInfoResult){
-            result.result = userInfoResult.result[0];
+            var result = {};
+            result['result'] = userInfoResult.result[0];
             if(!result.result.name){
                 where = 'uuid='+req.query.uuid;
                 dbHelper.findData('user',column,where,fields,function(userResult){  
