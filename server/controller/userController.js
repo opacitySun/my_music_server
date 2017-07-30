@@ -81,15 +81,6 @@ module.exports = function(app){
                     res.json(result);
                 }
             }  
-        });     
-            }
+        });
     });
-}
-
-/**  
- * get User  
- * @returns {Function}  
- */  
-exports.userFindAction = function(req, res) {   
-    
 }
