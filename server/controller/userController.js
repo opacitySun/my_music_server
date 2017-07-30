@@ -58,10 +58,10 @@ module.exports = function(app){
     //查找用户信息
     app.all("/getUserInfoAction",function(req,res){
         var _callback = req.query.callback;
-        var column = false,where = 'user_uuid='+req.query.uuid;
+        var column = false,where = 'user_uuid="'+req.query.uuid+'"';
         var fields = {};
+        var result = {};
         dbHelper.findData('user_info',column,where,fields,function(userInfoResult){
-            var result = {};
             result['result'] = userInfoResult.result[0];
             if(!result.result.name){
                 where = 'uuid='+req.query.uuid;
