@@ -55,6 +55,35 @@ module.exports = function(app){
             });    
         });     
     });
+    //查找用户信息
+    app.all("/getUserInfoAction",function(req,res){
+        var _callback = req.query.callback;
+        var column = false,where = 'user_uuid='+req.query.uuid;
+        var fields = {};
+        dbHelper.findData('user_info',column,where,fields,function(userInfoResult){
+            result.result = userInfoResult.result[0];
+            if(!result.result.name){
+                where = 'uuid='+req.query.uuid;
+                dbHelper.findData('user',column,where,fields,function(userResult){  
+                    result.result.name = userResult.result[0].name;
+                    if(_callback){
+                        res.type('text/javascript');
+                        res.send(_callback + '(' + JSON.stringify(result) + ')');
+                    }else{
+                        res.json(result);
+                    }
+                });    
+            }else{
+                if(_callback){
+                    res.type('text/javascript');
+                    res.send(_callback + '(' + JSON.stringify(result) + ')');
+                }else{
+                    res.json(result);
+                }
+            }  
+        });     
+            }
+    });
 }
 
 /**  
