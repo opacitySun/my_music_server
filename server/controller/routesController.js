@@ -4,9 +4,11 @@
  */
 
 var user = require("./userController"),
-	music = require("./musicController");
+	music = require("./musicController"),
+	tools = require("./toolsController");
 
 module.exports = function(app){
 	user(app);
 	music(app);
+	tools(app);
 }
