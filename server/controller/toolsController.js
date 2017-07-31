@@ -1,39 +1,40 @@
-var http = require("http"),
-	querystring = require('querystring');
+var Dayu = require('alidayu-node');
+var DayuNew = new Dayu('LTAI8h07u5dIRrq8','OklK2eSrlgmX5SteNebTSiS8NJJyJh');
+
+var GetRandomNum = function(n){
+	var chars = ['0','1','2','3','4','5','6','7','8','9'];
+	var res = "";
+	for(var i = 0; i < n ; i ++) {
+		var id = Math.ceil(Math.random()*35);
+		res += chars[id];
+	}
+	return res;
+};
+
+var GetRandomString = function(n){
+	var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+	var res = "";
+	for(var i = 0; i < n ; i ++) {
+		var id = Math.ceil(Math.random()*35);
+		res += chars[id];
+	}
+	return res;
+};
 
 module.exports = function(app){
     //发送短信验证码
     app.all("/smsCodeAction",function(req,res){
-		var code = "3212";
-	    var txt = "您的验证码是："+code+"。请不要把验证码泄露给其他人。如非本人操作，可不用理会！"; 
-	    var data = { 
-			account: 'myaccount', 
-			password: "mypwd", 
-			mobile:req.query.mobile, 
-			content:txt 
-		};
-		data = require('querystring').stringify(data); 
-		var opt = { 
-			method: "POST", 
-			host: "sms.106jiekou.com",//可以用域名,ip地址 
-			port: 80, 
-			path: "/utf8/sms.aspx",
-			headers: { 
-				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-			} 
-		};
-		var request = http.request(opt, function (result) { 
-			console.log('STATUS: ' + result.statusCode); 
-			console.log('HEADERS: ' + JSON.stringify(result.headers)); 
-			result.setEncoding('utf8'); 
-			result.on('data', function (chunk) { 
-				console.log('BODY: ' + chunk); 
-			});
-		}); 
-		request.on('error', function (e) { 
-			console.log('problem with request: ' + e.message); 
-		}); 
-		request.write(data);//把请求发出去 
-		request.end();
+    	var _callback = req.query.callback,
+    		mobile = req.query.mobile;
+    	var number = GetRandomNum(6);
+		DayuNew.smsSend({
+		    sms_free_sign_name: '孙博为', //短信签名，参考这里 http://www.alidayu.com/admin/service/sign
+		    sms_param: JSON.stringify({"number": number}),//短信变量，对应短信模板里面的变量
+		    rec_num: mobile, //接收短信的手机号
+		    sms_template_code: 'SMS_80110091' //短信模板，参考这里 http://www.alidayu.com/admin/service/tpl
+		});
     });
+
+    //生成验证码
+
 }
