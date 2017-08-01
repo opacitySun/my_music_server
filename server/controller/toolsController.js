@@ -1,5 +1,5 @@
 var Dayu = require('alidayu-node');
-var DayuNew = new Dayu('LTAI8h07u5dIRrq8','OklK2eSrlgmX5SteNebTSiS8NJJyJh');
+var DayuNew = new Dayu('LTAIATC5U00WQH0q','9LOMao1HSd3nzxYqXuavZKLeDeFgE7');
 
 var GetRandomNum = function(n){
 	var chars = ['0','1','2','3','4','5','6','7','8','9'];
