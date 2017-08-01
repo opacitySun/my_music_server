@@ -53,7 +53,7 @@ module.exports = function(app){
     	var imgresult = verifyCode.Generate();
 		var vcode = imgresult.code;
 		var imgDataURL = imgresult.dataURL;
-		var result = {"imghtml":'<img src="'+imgDataURL+'">'};
+		var result = {"imghtml":'<img class="weui-vcode-img" src="'+imgDataURL+'">'};
 		res.type('text/javascript');
 		res.send(_callback + '(' + JSON.stringify(result) + ')');
     });
