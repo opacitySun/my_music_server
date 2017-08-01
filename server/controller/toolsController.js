@@ -1,10 +1,9 @@
-var Dayu = require('alidayu-node');
-var DayuNew = new Dayu('LTAIATC5U00WQH0q','9LOMao1HSd3nzxYqXuavZKLeDeFgE7');
 var SMS = require('aliyun-sms-node');
 var sms = new SMS({
 	AccessKeyId: 'LTAIATC5U00WQH0q',
 	AccessKeySecret: '9LOMao1HSd3nzxYqXuavZKLeDeFgE7'
 });
+var verifyCode = require('verify-code');
 
 var GetRandomNum = function(n){
 	var chars = ['0','1','2','3','4','5','6','7','8','9'];
@@ -32,27 +31,12 @@ module.exports = function(app){
     	var _callback = req.query.callback,
     		mobile = req.query.mobile;
     	var number = GetRandomNum(6);
-		// DayuNew.smsSend({
-		//     sms_free_sign_name: '孙博为', //短信签名，参考这里 http://www.alidayu.com/admin/service/sign
-		//     sms_param: JSON.stringify({"number": number}),//短信变量，对应短信模板里面的变量
-		//     rec_num: mobile, //接收短信的手机号
-		//     sms_template_code: 'SMS_80110091' //短信模板，参考这里 http://www.alidayu.com/admin/service/tpl
-		// },function(error,response){
-		// 	var result;
-		// 	if(error){
-		// 		result = error;
-		// 	}else{
-		// 		result = response;
-		// 	}
-		// 	res.type('text/javascript');
-  //           res.send(_callback + '(' + JSON.stringify(result) + ')');
-		// });
     	sms.send({
 			Format: 'JSON',
 			Action: 'SendSms',
 			TemplateParam: '{"number":'+number+'}',
 			PhoneNumbers: mobile,
-			SignName: '孙博为',
+			SignName: 'FW音乐小屋',
 			TemplateCode: 'SMS_80110091'
 		}).then(function(result){
 			res.type('text/javascript');
@@ -64,5 +48,13 @@ module.exports = function(app){
     });
 
     //生成验证码
-
+    app.all("/getVerificationCodeAction",function(req,res){
+    	var _callback = req.query.callback;
+    	var imgresult = verifyCode.Generate();
+		var vcode = imgresult.code;
+		var imgDataURL = imgresult.dataURL;
+		var result = {"imghtml":'<img src="'+imgDataURL+'">'};
+		res.type('text/javascript');
+		res.send(_callback + '(' + JSON.stringify(result) + ')');
+    });
 }
