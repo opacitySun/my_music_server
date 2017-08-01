@@ -54,7 +54,7 @@ module.exports = function(app){
     	var imgresult = verifyCode.Generate();
 		var vcode = imgresult.code;
 		var imgDataURL = imgresult.dataURL;
-		var result = {"imghtml":'<img class="weui-vcode-img" src="'+imgDataURL+'">'};
+		var result = {"imghtml":'<img class="weui-vcode-img" src="'+imgDataURL+'">','vcode':vcode};
 		req.session.vcode = vcode;
 		res.type('text/javascript');
 		res.send(_callback + '(' + JSON.stringify(result) + ')');
