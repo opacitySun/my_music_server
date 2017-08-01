@@ -32,6 +32,15 @@ module.exports = function(app){
 		    sms_param: JSON.stringify({"number": number}),//短信变量，对应短信模板里面的变量
 		    rec_num: mobile, //接收短信的手机号
 		    sms_template_code: 'SMS_80110091' //短信模板，参考这里 http://www.alidayu.com/admin/service/tpl
+		},function(error,response){
+			var result;
+			if(error){
+				result = error;
+			}else{
+				result = response;
+			}
+			res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
 		});
     });
 
