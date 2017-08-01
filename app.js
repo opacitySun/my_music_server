@@ -30,10 +30,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(expressSession({
-  cookie: {maxAge:14400000}, //14400s即4个小时后session和相应的cookie失效过期
-  resave: true, //是指每次请求都重新设置session cookie
+  cookie: {maxAge:1800000}, //1800s即半个小时后session和相应的cookie失效过期
+  resave: false, //是指每次请求都重新设置session cookie
   saveUninitialized: false, //是指无论有没有session cookie，每次请求都设置个session cookie，默认给个标示为connect.sid
-  secret: '3boy'
+  secret: 'sunMusic'
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 

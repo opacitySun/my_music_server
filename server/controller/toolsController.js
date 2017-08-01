@@ -39,6 +39,8 @@ module.exports = function(app){
 			SignName: 'FW音乐小屋',
 			TemplateCode: 'SMS_80110091'
 		}).then(function(result){
+			req.session.mcode = number;
+			req.session.reload();
 			res.type('text/javascript');
 			res.send(_callback + '(' + JSON.stringify(result) + ')');
 		}).catch(function(error){
@@ -54,6 +56,8 @@ module.exports = function(app){
 		var vcode = imgresult.code;
 		var imgDataURL = imgresult.dataURL;
 		var result = {"imghtml":'<img class="weui-vcode-img" src="'+imgDataURL+'">'};
+		req.session.vcode = vcode;
+		req.session.reload();
 		res.type('text/javascript');
 		res.send(_callback + '(' + JSON.stringify(result) + ')');
     });

@@ -9,33 +9,23 @@ var fs = require("fs"),
 module.exports = function(app){
     //登录
     app.all("/loginAction",function(req,res){
+        var _callback = req.query.callback,
+            name = req.query.name,
+            pwd = req.query.pwd,
+            vcode = req.query.vcode;
+        if(vcode != req.session.vcode){
+            var result = {success: 0, flag: '验证码不正确'};
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+            return false;
+        }
         var column = false;
-        var where = 'name='+req.body.loginName+' and pwd='+req.body.loginPwd;
+        var where = 'name='+name+' and pwd='+pwd;
         var fields = {};
         dbHelper.findData('user',column,where,fields,function(result){  
-            if(result.success == 1 && result.result.auth == 0){
-                req.session.username=result.result.name;          
-                req.session.password=result.result.pwd;
-                req.session.regenerate(function (err) {
-                    if(err){
-                        console.log("session重新初始化失败.");
-                    }else{
-                        console.log("session被重新初始化.");
-                    } 
-                });   
-                return res.redirect('/');
-            }else{
-                console.log(JSON.stringify(result));
-                req.session.destroy(function (err) {
-                    if(err){
-                        console.log("session销毁失败.");
-                    }else{
-                        console.log("session被销毁.");
-                    }
-                });
-                return res.redirect('/login');
-            }
-        });    
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+        });
     });
     //查找用户列表
     app.all("/userListAction",function(req,res){
