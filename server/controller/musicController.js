@@ -40,7 +40,7 @@ module.exports = function(app){
     app.all("/getUserMusicList",function(req,res){
         var _callback = req.query.callback,
             uuid = req.query.uuid;
-        var column = false,where = 'user_uuid='+uuid;
+        var column = false,where = 'user_uuid="'+uuid+'"';
         var fields = {};
         dbHelper.findData('user_as_music',column,where,fields,function(UASMResult){
             var id_arr = [];
