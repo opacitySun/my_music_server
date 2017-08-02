@@ -35,4 +35,24 @@ module.exports = function(app){
             }
         });
     });
+
+    //根据UUID查找用户的音乐列表
+    app.all("/getUserMusicList",function(req,res){
+        var _callback = req.query.callback,
+            uuid = req.query.uuid;
+        var column = false,where = 'user_uuid='+uuid;
+        var fields = {};
+        dbHelper.findData('user_as_music',column,where,fields,function(UASMResult){
+            var id_arr = [];
+            UASMResult.result.forEach(function(obj){
+                id_arr.push(obj.music_id);
+            });
+            id_arr = id_arr.join(",");
+            where = 'id in ('+id_arr+')';
+            dbHelper.findData('music',column,where,fields,function(result){
+                res.type('text/javascript');
+                res.send(_callback + '(' + JSON.stringify(result) + ')');
+            });
+        });
+    });
 }

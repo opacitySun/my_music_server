@@ -27,24 +27,6 @@ module.exports = function(app){
             res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
     });
-    //查找用户列表
-    app.all("/userListAction",function(req,res){
-        var column = false,where = false;
-        var fields = {};
-        dbHelper.findData('user',column,where,fields,function(userResult){
-            var result = userResult;
-            dbHelper.findData('user_type',column,where,fields,function(userTypeResult){  
-                result.result.forEach(function(obj){
-                    userTypeResult.result.forEach(function(o){
-                        if(obj.type == o.type){
-                            obj["typeName"] = o.name;
-                        }
-                    });
-                });
-                res.json(result);
-            });    
-        });     
-    });
     //查找用户信息
     app.all("/getUserInfoAction",function(req,res){
         var _callback = req.query.callback;
