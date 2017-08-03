@@ -34,7 +34,7 @@ module.exports = function(app){
             name = req.query.mobile,
             pwd = req.query.pwd,
             mcode = req.query.mcode;
-        if(vcode != req.session.mcode){
+        if(mcode != req.session.mcode){
             req.session.mcode = 'EFnj!Q&9teH8a8td';
             var result = {success: 0, flag: '验证码不正确,此次验证码已失效，请重新获取验证码进行提交'};
             res.type('text/javascript');
