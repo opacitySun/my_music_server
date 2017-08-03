@@ -63,7 +63,7 @@ module.exports = function(app){
             music_id = req.query.music_id;
         var column = false,where = 'user_uuid="'+uuid+'" and music_id='+music_id;
         var fields = {};
-        dbHelper.findData('user_as_music',column,where,fields,function(UASMResult){
+        dbHelper.findData('user_as_music',column,where,fields,function(result){
             res.type('text/javascript');
             res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
