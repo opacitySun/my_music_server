@@ -55,4 +55,17 @@ module.exports = function(app){
             });
         });
     });
+
+    //根据UUID查找是否收藏了该音乐
+    app.all("/confirmCollectMusic",function(req,res){
+        var _callback = req.query.callback,
+            uuid = req.query.uuid,
+            music_id = req.query.music_id;
+        var column = false,where = 'user_uuid="'+uuid+'" and music_id='+music_id;
+        var fields = {};
+        dbHelper.findData('user_as_music',column,where,fields,function(UASMResult){
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+        });
+    });
 }
