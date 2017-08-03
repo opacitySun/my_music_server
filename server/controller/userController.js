@@ -64,10 +64,9 @@ module.exports = function(app){
                         column = false,where = 'name="'+name+'" and pwd="'+pwd+'"';
                         dbHelper.findData('user',column,where,fields,function(FindResult2){
                             if(FindResult2.success == 1){
-                                var FindResult2 = FindResult2.result[0];
                                 column = ['user_uuid','createtime','updatetime'];
                                 values = [];
-                                values.push('"'+FindResult2.uuid+'"');
+                                values.push('"'+FindResult2.result[0].uuid+'"');
                                 values.push(this_time);
                                 values.push(this_time);
                                 dbHelper.addData('user_info',column,values,function(AddInfoResult){
