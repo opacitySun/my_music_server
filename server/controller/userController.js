@@ -28,6 +28,52 @@ module.exports = function(app){
             res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
     });
+    //注册
+    app.all("/registerAction",function(req,res){
+        var _callback = req.query.callback,
+            name = req.query.mobile,
+            pwd = req.query.pwd,
+            mcode = req.query.mcode;
+        if(vcode != req.session.mcode){
+            req.session.mcode = 'EFnj!Q&9teH8a8td';
+            var result = {success: 0, flag: '验证码不正确,此次验证码已失效，请重新获取验证码进行提交'};
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+            return false;
+        }
+        var column = false;
+        var where = 'name='+name;
+        var fields = {};
+        dbHelper.findData('user',column,where,fields,function(FindResult){
+            if(result.success == 1){
+                var result = {success: 0, flag: '此用户已存在'};
+                res.type('text/javascript');
+                res.send(_callback + '(' + JSON.stringify(result) + ')');
+            }else{
+                column = ['uuid','name','pwd','auth','createtime','updatetime'];
+                var values = [];
+                var this_time = new Date().getTime();
+                values.push('uuid()');
+                values.push(name);
+                values.push(pwd);
+                values.push(1);
+                values.push(this_time);
+                values.push(this_time);
+                dbHelper.addData('user',column,values,function(AddResult){
+                    if(AddResult.success == 1){
+                        column = false,where = 'name='+name+' and pwd='+pwd;
+                        dbHelper.findData('user',column,where,fields,function(FindResult2){
+                            res.type('text/javascript');
+                            res.send(_callback + '(' + JSON.stringify(FindResult2) + ')');
+                        });
+                    }else{
+                        res.type('text/javascript');
+                        res.send(_callback + '(' + JSON.stringify(AddResult) + ')');
+                    }
+                });
+            }
+        });
+    });
     //查找用户信息
     app.all("/getUserInfoAction",function(req,res){
         var _callback = req.query.callback;
