@@ -72,10 +72,13 @@ module.exports = function(app){
                                 values.push(this_time);
                                 dbHelper.addData('user_info',column,values,function(AddInfoResult){
                                     console.log(AddInfoResult);
+                                    res.type('text/javascript');
+                                    res.send(_callback + '(' + JSON.stringify(FindResult2) + ')');
                                 });
-                            }
-                            res.type('text/javascript');
-                            res.send(_callback + '(' + JSON.stringify(FindResult2) + ')');
+                            }else{
+                                res.type('text/javascript');
+                                res.send(_callback + '(' + JSON.stringify(FindResult2) + ')');
+                            } 
                         });
                     }else{
                         res.type('text/javascript');
