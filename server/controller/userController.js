@@ -74,6 +74,17 @@ module.exports = function(app){
             }
         });
     });
+    //查找用户
+    app.all("/getUserAction",function(req,res){
+        var _callback = req.query.callback;
+        var column = false,where = 'uuid="'+req.query.uuid+'"';
+        var fields = {};
+        var result = {};
+        dbHelper.findData('user',column,where,fields,function(result){
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+        });
+    });
     //查找用户信息
     app.all("/getUserInfoAction",function(req,res){
         var _callback = req.query.callback;
@@ -81,27 +92,32 @@ module.exports = function(app){
         var fields = {};
         var result = {};
         dbHelper.findData('user_info',column,where,fields,function(userInfoResult){
-            result['result'] = userInfoResult.result[0];
-            if(!result.result.name){
-                where = 'uuid="'+req.query.uuid+'"';
-                dbHelper.findData('user',column,where,fields,function(userResult){
-                    if(userResult.success == 1){
-                        result.result.name = userResult.result[0].name;
+            if(userInfoResult.success == 1){
+                result['result'] = userInfoResult.result[0];
+                if(!result.result.name){
+                    where = 'uuid="'+req.query.uuid+'"';
+                    dbHelper.findData('user',column,where,fields,function(userResult){
+                        if(userResult.success == 1){
+                            result.result.name = userResult.result[0].name;
+                            res.type('text/javascript');
+                            res.send(_callback + '(' + JSON.stringify(result) + ')');
+                        }else{
+                            res.type('text/javascript');
+                            res.send(_callback + '(' + JSON.stringify(userResult) + ')');
+                        }
+                    });    
+                }else{
+                    if(_callback){
                         res.type('text/javascript');
                         res.send(_callback + '(' + JSON.stringify(result) + ')');
                     }else{
-                        res.type('text/javascript');
-                        res.send(_callback + '(' + JSON.stringify(userResult) + ')');
+                        res.json(result);
                     }
-                });    
+                }  
             }else{
-                if(_callback){
-                    res.type('text/javascript');
-                    res.send(_callback + '(' + JSON.stringify(result) + ')');
-                }else{
-                    res.json(result);
-                }
-            }  
+                res.type('text/javascript');
+                res.send(_callback + '(' + JSON.stringify(userInfoResult) + ')');
+            }
         });
     });
 }
