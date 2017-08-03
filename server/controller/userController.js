@@ -63,6 +63,17 @@ module.exports = function(app){
                     if(AddResult.success == 1){
                         column = false,where = 'name="'+name+'" and pwd="'+pwd+'"';
                         dbHelper.findData('user',column,where,fields,function(FindResult2){
+                            if(FindResult2.success == 1){
+                                var FindResult2 = FindResult2.result[0];
+                                column = ['user_uuid','createtime','updatetime'];
+                                values = [];
+                                values.push(FindResult2.uuid);
+                                values.push(this_time);
+                                values.push(this_time);
+                                dbHelper.addData('user_info',column,values,function(AddInfoResult){
+                                    console.log(AddInfoResult);
+                                });
+                            }
                             res.type('text/javascript');
                             res.send(_callback + '(' + JSON.stringify(FindResult2) + ')');
                         });
@@ -91,33 +102,9 @@ module.exports = function(app){
         var column = false,where = 'user_uuid="'+req.query.uuid+'"';
         var fields = {};
         var result = {};
-        dbHelper.findData('user_info',column,where,fields,function(userInfoResult){
-            if(userInfoResult.success == 1){
-                result['result'] = userInfoResult.result[0];
-                if(!result.result.name){
-                    where = 'uuid="'+req.query.uuid+'"';
-                    dbHelper.findData('user',column,where,fields,function(userResult){
-                        if(userResult.success == 1){
-                            result.result.name = userResult.result[0].name;
-                            res.type('text/javascript');
-                            res.send(_callback + '(' + JSON.stringify(result) + ')');
-                        }else{
-                            res.type('text/javascript');
-                            res.send(_callback + '(' + JSON.stringify(userResult) + ')');
-                        }
-                    });    
-                }else{
-                    if(_callback){
-                        res.type('text/javascript');
-                        res.send(_callback + '(' + JSON.stringify(result) + ')');
-                    }else{
-                        res.json(result);
-                    }
-                }  
-            }else{
-                res.type('text/javascript');
-                res.send(_callback + '(' + JSON.stringify(userInfoResult) + ')');
-            }
+        dbHelper.findData('user_info',column,where,fields,function(result){
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
     });
 }
