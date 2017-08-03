@@ -83,14 +83,15 @@ module.exports = function(app){
         dbHelper.findData('user_info',column,where,fields,function(userInfoResult){
             result['result'] = userInfoResult.result[0];
             if(!result.result.name){
-                where = 'uuid='+req.query.uuid;
-                dbHelper.findData('user',column,where,fields,function(userResult){  
-                    result.result.name = userResult.result[0].name;
-                    if(_callback){
+                where = 'uuid="'+req.query.uuid+'"';
+                dbHelper.findData('user',column,where,fields,function(userResult){
+                    if(userResult.success == 1){
+                        result.result.name = userResult.result[0].name;
                         res.type('text/javascript');
                         res.send(_callback + '(' + JSON.stringify(result) + ')');
                     }else{
-                        res.json(result);
+                        res.type('text/javascript');
+                        res.send(_callback + '(' + JSON.stringify(userResult) + ')');
                     }
                 });    
             }else{
