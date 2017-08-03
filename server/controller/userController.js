@@ -45,7 +45,7 @@ module.exports = function(app){
         var where = 'name='+name;
         var fields = {};
         dbHelper.findData('user',column,where,fields,function(FindResult){
-            if(result.success == 1){
+            if(FindResult.success == 1){
                 var result = {success: 0, flag: '此用户已存在'};
                 res.type('text/javascript');
                 res.send(_callback + '(' + JSON.stringify(result) + ')');
