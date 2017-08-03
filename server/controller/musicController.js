@@ -77,7 +77,7 @@ module.exports = function(app){
         var column = ['user_uuid','music_id','createtime','updatetime'],
             values = [];
         var this_time = new Date().getTime();
-        values.push(uuid);
+        values.push('"'+uuid+'"');
         values.push(music_id);
         values.push(this_time);
         values.push(this_time);
