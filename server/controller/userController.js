@@ -67,7 +67,7 @@ module.exports = function(app){
                                 var FindResult2 = FindResult2.result[0];
                                 column = ['user_uuid','createtime','updatetime'];
                                 values = [];
-                                values.push(FindResult2.uuid);
+                                values.push('"'+FindResult2.uuid+'"');
                                 values.push(this_time);
                                 values.push(this_time);
                                 dbHelper.addData('user_info',column,values,function(AddInfoResult){
