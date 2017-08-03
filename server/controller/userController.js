@@ -21,7 +21,7 @@ module.exports = function(app){
             return false;
         }
         var column = false;
-        var where = 'name='+name+' and pwd='+pwd;
+        var where = 'name="'+name+'" and pwd="'+pwd+'"';
         var fields = {};
         dbHelper.findData('user',column,where,fields,function(result){  
             res.type('text/javascript');
@@ -54,14 +54,14 @@ module.exports = function(app){
                 var values = [];
                 var this_time = new Date().getTime();
                 values.push('uuid()');
-                values.push(name);
-                values.push(pwd);
+                values.push('"'+name+'"');
+                values.push('"'+pwd+'"');
                 values.push(1);
                 values.push(this_time);
                 values.push(this_time);
                 dbHelper.addData('user',column,values,function(AddResult){
                     if(AddResult.success == 1){
-                        column = false,where = 'name='+name+' and pwd='+pwd;
+                        column = false,where = 'name="'+name+'" and pwd="'+pwd+'"';
                         dbHelper.findData('user',column,where,fields,function(FindResult2){
                             res.type('text/javascript');
                             res.send(_callback + '(' + JSON.stringify(FindResult2) + ')');
