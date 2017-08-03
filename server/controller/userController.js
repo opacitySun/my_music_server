@@ -14,7 +14,8 @@ module.exports = function(app){
             pwd = req.query.pwd,
             vcode = req.query.vcode;
         if(vcode != req.session.vcode){
-            var result = {success: 0, flag: '验证码不正确'};
+            req.session.vcode = 'S#S3EyD6M5g#U&ty';
+            var result = {success: 0, flag: '验证码不正确,此次验证码已失效，请重新生成验证码进行提交'};
             res.type('text/javascript');
             res.send(_callback + '(' + JSON.stringify(result) + ')');
             return false;
