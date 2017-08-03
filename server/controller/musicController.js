@@ -68,4 +68,34 @@ module.exports = function(app){
             res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
     });
+
+    //添加收藏
+    app.all("/addCollectMusic",function(req,res){
+        var _callback = req.query.callback,
+            uuid = req.query.uuid,
+            music_id = req.query.music_id;
+        var column = ['user_uuid','music_id','createtime','updatetime'],
+            values = [];
+        var this_time = new Date().getTime();
+        values.push(uuid);
+        values.push(music_id);
+        values.push(this_time);
+        values.push(this_time);
+        dbHelper.addData('user_as_music',column,values,function(result){
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+        });
+    });
+
+    //取消收藏
+    app.all("/cancelCollectMusic",function(req,res){
+        var _callback = req.query.callback,
+            uuid = req.query.uuid,
+            music_id = req.query.music_id;
+        var where = 'user_uuid="'+uuid+'" and music_id='+music_id;
+        dbHelper.removeData('user_as_music',where,function(result){
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+        });
+    });
 }
