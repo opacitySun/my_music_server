@@ -113,9 +113,11 @@ module.exports = function(app){
     app.all("/uploadHeadImgAction",function(req,res){
         res.header("Access-Control-Allow-Origin", "*");   //设置跨域访问  
         uploadHelper.fileSingle(req,res,"userinfo-img",function(result){
-            var fileUrl = "/files/";
-            var imgUrl = fileUrl + result.file.filename;
-            result = {success: 0, flag: '上传成功', img:imgUrl};
+            if(result.success == 1){
+                var fileUrl = "/files/";
+                var imgUrl = fileUrl + result.result.file.filename;
+                result = {success: 1, flag: '上传成功', img:imgUrl};
+            }
             res.json(result);
         });   
     });

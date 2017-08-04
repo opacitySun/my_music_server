@@ -46,14 +46,16 @@ var multerConfig = {
  */ 
 exports.fileSingle = function(req,res,fieldname,callback){
 	var upload = multer(multerConfig).single(fieldname);
+	var result;
 	upload(req, res, function(err){
 		if(err){
 			console.log(err);
-			return;
+			result = {"success":0,"flag":err};
 		}else{
 			console.log(req.file);
-			callback(req);
+			result = {"success":0,"flag":'success',"result":req};
 		}
+		callback(result);
 	});
 }
 
