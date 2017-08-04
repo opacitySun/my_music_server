@@ -109,4 +109,14 @@ module.exports = function(app){
             res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
     });
+    //上传用户头像
+    app.all("/uploadHeadImgAction",function(req,res){
+        res.header("Access-Control-Allow-Origin", "*");   //设置跨域访问  
+        uploadHelper.fileSingle(req,res,"userinfo-img",function(result){
+            var fileUrl = "/files/";
+            var imgUrl = fileUrl + result.file.filename;
+            result = {success: 0, flag: '上传成功', img:imgUrl};
+            res.json(result);
+        });   
+    });
 }
