@@ -53,7 +53,7 @@ exports.fileSingle = function(req,res,fieldname,callback){
 			result = {"success":0,"flag":err};
 		}else{
 			console.log(req.file);
-			result = {"success":0,"flag":'success',"result":req};
+			result = {"success":1,"flag":'success',"result":req};
 		}
 		callback(result);
 	});
