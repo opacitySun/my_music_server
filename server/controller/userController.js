@@ -121,4 +121,27 @@ module.exports = function(app){
             res.json(result);
         });   
     });
+    //保存用户信息
+    app.all("/saveUserInfoActive",function(req,res){
+        var _callback = req.query.callback,
+            uuid = req.query.uuid,
+            name = req.query.name,
+            sex = req.query.sex;
+        var column = ['name','sex','createtime','updatetime'],
+            values = [];
+        var this_time = new Date().getTime();
+        values.push('"'+name+'"');
+        values.push(sex);
+        values.push(this_time);
+        values.push(this_time);
+        if(req.query.img){
+            column.push('img');
+            values.push('"'+req.query.img+'"');
+        }
+        where = 'user_uuid="'+uuid+'"';
+        dbHelper.updateData('user_info',column,values,where,function(result){
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+        });
+    });
 }
