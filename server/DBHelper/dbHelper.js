@@ -31,7 +31,17 @@ exports.addData = function(table,column,values,callback){
  * @param callback 
  */  
 exports.updateData = function(table,column,values,where,callback) {
-    var sql = 'update '+table+' set '+column+'='+values+' where '+where;
+    var sets = [];
+    for(var i=0;i<column.length;i++){
+        for(var j=0;j<values.length;j++){
+            if(j == i){
+                var set = column[i]+'='+values[j];
+                sets.push(set);
+            }
+        }
+    }
+    sets = sets.join(",");
+    var sql = 'update '+table+' set '+sets+' where '+where;
     db.query(sql,function(error,result){
         if(error) {  
             console.log(error);  
