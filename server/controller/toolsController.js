@@ -5,6 +5,7 @@ var sms = new SMS({
 });
 var verifyCode = require('verify-code');
 
+//获取随机数
 var GetRandomNum = function(n){
 	var chars = ['0','1','2','3','4','5','6','7','8','9'];
 	var res = "";
@@ -15,6 +16,7 @@ var GetRandomNum = function(n){
 	return res;
 };
 
+//获取随机字符串
 var GetRandomString = function(n){
 	var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 	var res = "";
@@ -25,6 +27,7 @@ var GetRandomString = function(n){
 	return res;
 };
 
+//判断时间戳是否为今天
 var timeStampIsToday = function(timeStamp){
 	if (new Date(timeStamp).toDateString() === new Date().toDateString()) {
         return true;
