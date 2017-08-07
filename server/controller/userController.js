@@ -89,19 +89,15 @@ module.exports = function(app){
     });
     //修改密码
     app.all("/editPwdAction",function(req,res){
-        res.header("Access-Control-Allow-Origin", "*");   //设置跨域访问
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
-        if (req.method == 'OPTIONS') {
-            res.send(200); //让options请求快速返回
-            return false;
-        }
-        var uuid = req.body.uuid,
-            pwd = req.body.pwd,
-            vcode = req.body.vcode;
+        var _callback = req.query.callback,
+            uuid = req.query.uuid,
+            pwd = req.query.pwd,
+            vcode = req.query.vcode;
         if(vcode != req.session.vcode){
             req.session.vcode = 'S#S3EyD6M5g#U&ty';
             var result = {success: 0, flag: '验证码不正确,此次验证码已失效，请重新生成验证码进行提交'};
-            res.json(result);
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
             return false;
         }
         var column = ['pwd','createtime','updatetime'],
@@ -112,7 +108,8 @@ module.exports = function(app){
         values.push(this_time);
         var where = 'uuid="'+uuid+'"';
         dbHelper.updateData('user',column,values,where,function(result){  
-            res.json(result);
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
     });
     //查找用户
