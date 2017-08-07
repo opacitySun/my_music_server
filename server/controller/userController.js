@@ -125,7 +125,7 @@ module.exports = function(app){
                 var signin_time = result0.result[0].signin_time;
                 var is_today = toolsController.timeStampIsToday(signin_time);
                 if(is_today){
-                    var result = {success: 0, flag: '您今日已签到'};
+                    var result = {success: 2, flag: '已签到'};
                     res.type('text/javascript');
                     res.send(_callback + '(' + JSON.stringify(result) + ')');
                 }else{
