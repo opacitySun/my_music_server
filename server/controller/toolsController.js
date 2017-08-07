@@ -70,9 +70,9 @@ module.exports = {
 	    });
 	},
 	GetRandomString:function(n){
-		GetRandomString(n);
+		return GetRandomString(n);
 	},
 	timeStampIsToday:function(timeStamp){
-		timeStampIsToday(timeStamp);
+		return timeStampIsToday(timeStamp);
 	}
 };
