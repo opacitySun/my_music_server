@@ -89,7 +89,11 @@ module.exports = function(app){
     });
     //修改密码
     app.all("/editPwdAction",function(req,res){
-        res.header("Access-Control-Allow-Origin", "*");   //设置跨域访问  
+        res.header("Access-Control-Allow-Origin", "*");   //设置跨域访问
+        if (req.method == 'OPTIONS') {
+            res.send(200); //让options请求快速返回
+            return false;
+        }
         var uuid = req.body.uuid,
             pwd = req.body.pwd,
             vcode = req.body.vcode;
