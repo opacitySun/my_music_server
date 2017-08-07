@@ -28,7 +28,7 @@ var GetRandomString = function(n){
 var timeStampIsToday = function(timeStamp){
 	if (new Date(timeStamp).toDateString() === new Date().toDateString()) {
         return true;
-    } else if (new Date(timeStamp) < new Date()){
+    }else{
         return false;
     }
 };
