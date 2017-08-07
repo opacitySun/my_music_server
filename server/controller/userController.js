@@ -137,7 +137,8 @@ module.exports = function(app){
                     values.push(this_time);
                     values.push(this_time);
                     values.push(this_time);
-                    dbHelper.updateData('user_info',column,values,where,function(result){  
+                    dbHelper.updateData('user_info',column,values,where,function(result){
+                        result['points'] = new_points;
                         res.type('text/javascript');
                         res.send(_callback + '(' + JSON.stringify(result) + ')');
                     });
