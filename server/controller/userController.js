@@ -87,6 +87,29 @@ module.exports = function(app){
             }
         });
     });
+    //修改密码
+    app.all("/editPwdAction",function(req,res){
+        res.header("Access-Control-Allow-Origin", "*");   //设置跨域访问  
+        var uuid = req.body.uuid,
+            pwd = req.body.pwd,
+            vcode = req.body.vcode;
+        if(vcode != req.session.vcode){
+            req.session.vcode = 'S#S3EyD6M5g#U&ty';
+            var result = {success: 0, flag: '验证码不正确,此次验证码已失效，请重新生成验证码进行提交'};
+            res.json(result);
+            return false;
+        }
+        var column = ['pwd','createtime','updatetime'],
+            values = [];
+        var this_time = new Date().getTime();
+        values.push('"'+pwd+'"');
+        values.push(this_time);
+        values.push(this_time);
+        var where = 'uuid="'+uuid+'"';
+        dbHelper.updateData('user',column,values,where,function(result){  
+            res.json(result);
+        });
+    });
     //查找用户
     app.all("/getUserAction",function(req,res){
         var _callback = req.query.callback;
