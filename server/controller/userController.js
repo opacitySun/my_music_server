@@ -90,7 +90,6 @@ module.exports = function(app){
     //修改密码
     app.all("/editPwdAction",function(req,res){
         res.header("Access-Control-Allow-Origin", "*");   //设置跨域访问  
-        res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
         var uuid = req.body.uuid,
             pwd = req.body.pwd,
             vcode = req.body.vcode;
