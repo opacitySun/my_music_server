@@ -10,5 +10,5 @@ var user = require("./userController"),
 module.exports = function(app){
 	user(app);
 	music(app);
-	tools(app);
+	tools.httpConnect(app);
 }

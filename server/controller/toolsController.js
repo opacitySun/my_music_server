@@ -25,38 +25,54 @@ var GetRandomString = function(n){
 	return res;
 };
 
-module.exports = function(app){
-    //发送短信验证码
-    app.all("/smsCodeAction",function(req,res){
-    	var _callback = req.query.callback,
-    		mobile = req.query.mobile;
-    	var number = GetRandomNum(6);
-    	sms.send({
-			Format: 'JSON',
-			Action: 'SendSms',
-			TemplateParam: '{"number":'+number+'}',
-			PhoneNumbers: mobile,
-			SignName: 'FW音乐小屋',
-			TemplateCode: 'SMS_80110091'
-		}).then(function(result){
-			req.session.mcode = number;
+var timeStampIsToday = function(timeStamp){
+	if (new Date(timeStamp).toDateString() === new Date().toDateString()) {
+        return true;
+    } else if (new Date(timeStamp) < new Date()){
+        return false;
+    }
+};
+
+module.exports = {
+	httpConnect:function(app){
+		//发送短信验证码
+	    app.all("/smsCodeAction",function(req,res){
+	    	var _callback = req.query.callback,
+	    		mobile = req.query.mobile;
+	    	var number = GetRandomNum(6);
+	    	sms.send({
+				Format: 'JSON',
+				Action: 'SendSms',
+				TemplateParam: '{"number":'+number+'}',
+				PhoneNumbers: mobile,
+				SignName: 'FW音乐小屋',
+				TemplateCode: 'SMS_80110091'
+			}).then(function(result){
+				req.session.mcode = number;
+				res.type('text/javascript');
+				res.send(_callback + '(' + JSON.stringify(result) + ')');
+			}).catch(function(error){
+				res.type('text/javascript');
+				res.send(_callback + '(' + JSON.stringify(error) + ')');
+			});
+	    });
+
+	    //生成验证码
+	    app.all("/getVerificationCodeAction",function(req,res){
+	    	var _callback = req.query.callback;
+	    	var imgresult = verifyCode.Generate();
+			var vcode = imgresult.code;
+			var imgDataURL = imgresult.dataURL;
+			var result = {"imghtml":'<img class="weui-vcode-img" src="'+imgDataURL+'">','vcode':vcode};
+			req.session.vcode = vcode;
 			res.type('text/javascript');
 			res.send(_callback + '(' + JSON.stringify(result) + ')');
-		}).catch(function(error){
-			res.type('text/javascript');
-			res.send(_callback + '(' + JSON.stringify(error) + ')');
-		});
-    });
-
-    //生成验证码
-    app.all("/getVerificationCodeAction",function(req,res){
-    	var _callback = req.query.callback;
-    	var imgresult = verifyCode.Generate();
-		var vcode = imgresult.code;
-		var imgDataURL = imgresult.dataURL;
-		var result = {"imghtml":'<img class="weui-vcode-img" src="'+imgDataURL+'">','vcode':vcode};
-		req.session.vcode = vcode;
-		res.type('text/javascript');
-		res.send(_callback + '(' + JSON.stringify(result) + ')');
-    });
-}
+	    });
+	},
+	GetRandomString:function(n){
+		GetRandomString(n);
+	},
+	timeStampIsToday:function(timeStamp){
+		timeStampIsToday(timeStamp);
+	}
+};

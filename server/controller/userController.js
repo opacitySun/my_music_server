@@ -1,6 +1,7 @@
 var fs = require("fs"),
     dbHelper = require("../DBHelper/dbHelper"),
-    uploadHelper = require("../DBHelper/uploadHelper");
+    uploadHelper = require("../DBHelper/uploadHelper"),
+    toolsController = require("./toolsController");
 
 /**  
  * 提供操作表的公共路由，以供ajax访问  
@@ -111,6 +112,41 @@ module.exports = function(app){
             res.type('text/javascript');
             res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
+    });
+    //签到
+    app.all("/signinAction",function(req,res){
+        var _callback = req.query.callback,
+            uuid = req.query.uuid;
+        var column = false,where = 'user_uuid="'+uuid+'"';
+        var fields = {};
+        var result = {};
+        dbHelper.findData('user_info',column,where,fields,function(result0){
+            if(result0.success == 1){
+                var signin_time = result0.result[0].signin_time;
+                var is_today = toolsController.timeStampIsToday(signin_time);
+                if(is_today){
+                    var result = {success: 0, flag: '您今日已签到'};
+                    res.type('text/javascript');
+                    res.send(_callback + '(' + JSON.stringify(result) + ')');
+                }else{
+                    column = ['points','signin_time','createtime','updatetime'];
+                    var values = [];
+                    var this_time = new Date().getTime();
+                    var new_points = Number(result0.result[0].points) + 10;
+                    values.push(new_points);
+                    values.push(this_time);
+                    values.push(this_time);
+                    values.push(this_time);
+                    dbHelper.updateData('user_info',column,values,where,function(result){  
+                        res.type('text/javascript');
+                        res.send(_callback + '(' + JSON.stringify(result) + ')');
+                    });
+                }
+            }else{
+                res.type('text/javascript');
+                res.send(_callback + '(' + JSON.stringify(result0) + ')');
+            }
+        });       
     });
     //查找用户
     app.all("/getUserAction",function(req,res){

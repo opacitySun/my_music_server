@@ -13,7 +13,8 @@ var ueditor = require("ueditor");
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-var routesController = require('./server/controller/routesController');
+var routesController = require('./server/controller/routesController'),
+    toolsController = require('./server/controller/toolsController');
 
 var app = express();
 
@@ -30,10 +31,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(expressSession({
-  cookie: {maxAge:1800000}, //1800s即半个小时后session和相应的cookie失效过期
+  cookie: {maxAge:1000 * 60 * 30}, //半小时后session和相应的cookie失效过期
   resave: false, //是指每次请求都重新设置session cookie
   saveUninitialized: false, //是指无论有没有session cookie，每次请求都设置个session cookie，默认给个标示为connect.sid
-  secret: 'sunMusic'
+  secret: 'sunMusic '+toolsController.GetRandomString(10)
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
