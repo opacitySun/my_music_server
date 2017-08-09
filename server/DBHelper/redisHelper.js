@@ -25,51 +25,51 @@ client.on("ready", function(res) {
 module.exports = {
 	//设置单个key和value
 	setSingle:function(key,val,callback){
-		if(!isError){
+		if(!isError()){
 			client.set(key,val,function(err,res){
 				callback(err, res);
 				client.quit();
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	},
 	//根据key获取单个value
 	getSingle:function(key,callback){
-		if(!isError){
+		if(!isError()){
 			client.get(key,function(err,res){
 				callback(err, res);
 				client.quit();
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	},
 	//设置对象
 	setObj:function(hash,obj,callback){
-		if(!isError){
+		if(!isError()){
 			client.hmset(hash, obj, function(err,res){
 				callback(err, res);
 				client.quit();
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	},
 	//获取对象
 	getObj:function(hash,callback){
-		if(!isError){
+		if(!isError()){
 			client.hgetall(hash, function(err,res){
 				callback(err, res);
 				client.quit();
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	},
 	//设置集合,zadd方法接收数组作为设定值的参数,数组中数据顺序为[score1, key1, score2, key2,...]的形式。
 	setSets:function(hash,keys,callback){
-		if(!isError){
+		if(!isError()){
 			var sets = [];
 			for(var score=0;score<keys.length;score++){
 				for(var i=0;i<keys.length;i++){
@@ -82,23 +82,23 @@ module.exports = {
 				client.quit();
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	},
 	//获取集合
 	getSets:function(hash,callback){
-		if(!isError){
+		if(!isError()){
 			client.zrange(hash, 0, -1, function(err, res) {
 				callback(err, res);
 				client.quit();
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	},
 	//设置lists列表
 	setLists:function(key,arr,callback){
-		if(!isError){
+		if(!isError()){
 			client.del(key, function(error, response) {
 				client.rpush(key, arr, function(err, res) {
 					callback(err, res);
@@ -106,40 +106,40 @@ module.exports = {
 				});
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	},
 	//向lists尾部添加新的数据
 	rpushLists:function(key,arr,callback){
-		if(!isError){
+		if(!isError()){
 			client.rpush(key, arr, function(err, res) {
 				callback(err, res);
 				client.quit();
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	},
 	//向lists头部添加新的数据
 	lpushLists:function(key,arr,callback){
-		if(!isError){
+		if(!isError()){
 			client.lpush(key, arr, function(err, res) {
 				callback(err, res);
 				client.quit();
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	},
 	//获取lists
 	getLists:function(key,callback){
-		if(!isError){
+		if(!isError()){
 			client.lrange(key, 0, -1, function(err, res) {
 				callback(err, res);
 				client.quit();
 			});
 		}else{
-			callback(isError, null);
+			callback(isError(), null);
 		}
 	}
 };
