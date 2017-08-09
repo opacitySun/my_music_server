@@ -28,7 +28,7 @@ module.exports = {
 		if(!isError()){
 			client.set(key,val,function(err,res){
 				callback(err, res);
-				client.quit();
+				//client.quit();
 			});
 		}else{
 			callback(isError(), null);
@@ -39,7 +39,7 @@ module.exports = {
 		if(!isError()){
 			client.get(key,function(err,res){
 				callback(err, res);
-				client.quit();
+				//client.quit();
 			});
 		}else{
 			callback(isError(), null);
@@ -50,7 +50,7 @@ module.exports = {
 		if(!isError()){
 			client.hmset(hash, obj, function(err,res){
 				callback(err, res);
-				client.quit();
+				//client.quit();
 			});
 		}else{
 			callback(isError(), null);
@@ -61,7 +61,7 @@ module.exports = {
 		if(!isError()){
 			client.hgetall(hash, function(err,res){
 				callback(err, res);
-				client.quit();
+				//client.quit();
 			});
 		}else{
 			callback(isError(), null);
@@ -79,7 +79,7 @@ module.exports = {
 			}
 			client.zadd(hash, sets, function(err, res) {
 				callback(err, res);
-				client.quit();
+				//client.quit();
 			});
 		}else{
 			callback(isError(), null);
@@ -90,7 +90,7 @@ module.exports = {
 		if(!isError()){
 			client.zrange(hash, 0, -1, function(err, res) {
 				callback(err, res);
-				client.quit();
+				//client.quit();
 			});
 		}else{
 			callback(isError(), null);
@@ -102,7 +102,7 @@ module.exports = {
 			client.del(key, function(error, response) {
 				client.rpush(key, arr, function(err, res) {
 					callback(err, res);
-					client.quit();
+					//client.quit();
 				});
 			});
 		}else{
@@ -114,7 +114,7 @@ module.exports = {
 		if(!isError()){
 			client.rpush(key, arr, function(err, res) {
 				callback(err, res);
-				client.quit();
+				//client.quit();
 			});
 		}else{
 			callback(isError(), null);
@@ -125,7 +125,7 @@ module.exports = {
 		if(!isError()){
 			client.lpush(key, arr, function(err, res) {
 				callback(err, res);
-				client.quit();
+				//client.quit();
 			});
 		}else{
 			callback(isError(), null);
@@ -136,7 +136,7 @@ module.exports = {
 		if(!isError()){
 			client.lrange(key, 0, -1, function(err, res) {
 				callback(err, res);
-				client.quit();
+				//client.quit();
 			});
 		}else{
 			callback(isError(), null);
