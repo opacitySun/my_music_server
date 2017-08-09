@@ -211,17 +211,18 @@ module.exports = function(app){
     app.all("/getHistoryAction",function(req,res){
         var _callback = req.query.callback;
         var result;
-        redisHelper.getSets('music_set_history',function(errR0,resR0){
+        redisHelper.getSets('history',function(errR0,resR0){
             if(errR0){
-                result = {'success':0,'flag':errR0};
+                result = {'success':0,'flag':'获取集合失败'};
                 res.type('text/javascript');
                 res.send(_callback + '(' + JSON.stringify(result) + ')');
             }else{
                 var resArr = [];
+                resR0 = resR0.sort(function(a,b){return b-a});
                 resR0.forEach(function(key){
-                    redisHelper.getObj(key,function(errR1,resR1){
+                    redisHelper.getObj(""+key,function(errR1,resR1){
                         if(errR1){
-                            result = {'success':0,'flag':errR1};
+                            result = {'success':0,'flag':'获取hash对象失败'};
                             res.type('text/javascript');
                             res.send(_callback + '(' + JSON.stringify(result) + ')');
                         }else{

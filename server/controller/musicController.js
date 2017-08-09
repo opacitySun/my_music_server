@@ -28,10 +28,11 @@ module.exports = function(app){
                     result.result.forEach(function(obj){
                         obj.lyric = getFileContent(obj.lyric);
                     });
-                    redisHelper.setObj('music_obj_'+result.result[0].id,result.result[0],function(errR0,resR0){
-                        var keys = ['music_obj_'+result.result[0].id];
+                    var this_time = new Date().getTime();
+                    redisHelper.setObj(""+this_time,result.result[0],function(errR0,resR0){
+                        var keys = [this_time];
                         if(!errR0){
-                            redisHelper.setSets('music_set_history',keys,function(errR1,resR1){
+                            redisHelper.setSets('history',keys,function(errR1,resR1){
                                 if(errR1){
                                     console.log(errR1);
                                 }
