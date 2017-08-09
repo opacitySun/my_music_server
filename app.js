@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var expressSession = require('express-session');
+var redisStore = require('connect-redis')(expressSession);
 var partials = require('express-partials');
 var nodexcn = require('nodexcn');
 var ueditor = require("ueditor");

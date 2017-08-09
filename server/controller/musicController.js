@@ -27,12 +27,8 @@ module.exports = function(app){
                     obj.lyric = getFileContent(obj.lyric);
                 });
             }
-            if(_callback){
-                res.type('text/javascript');
-                res.send(_callback + '(' + JSON.stringify(result) + ')');
-            }else{
-                res.json(result);
-            }
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
     });
 
