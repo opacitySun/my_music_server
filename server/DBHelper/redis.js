@@ -69,14 +69,14 @@ module.exports = {
 	},
 	//设置集合,zadd方法接收数组作为设定值的参数,数组中数据顺序为[score1, key1, score2, key2,...]的形式。
 	setSets:function(hash,keys,callback){
-		var sets = [];
-		for(var score=0;score<keys.length;score++){
-			for(var i=0;i<keys.length;i++){
-				sets.push(score);
-				sets.push(keys[i]);
-			}
-		}
 		if(!isError){
+			var sets = [];
+			for(var score=0;score<keys.length;score++){
+				for(var i=0;i<keys.length;i++){
+					sets.push(score);
+					sets.push(keys[i]);
+				}
+			}
 			client.zadd(hash, sets, function(err, res) {
 				callback(err, res);
 				client.quit();
