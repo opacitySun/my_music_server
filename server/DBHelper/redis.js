@@ -68,7 +68,14 @@ module.exports = {
 		}
 	},
 	//设置集合,zadd方法接收数组作为设定值的参数,数组中数据顺序为[score1, key1, score2, key2,...]的形式。
-	setSets:function(hash,sets,callback){
+	setSets:function(hash,keys,callback){
+		var sets = [];
+		for(var score=0;score<keys.length;score++){
+			for(var i=0;i<keys.length;i++){
+				sets.push(score);
+				sets.push(keys[i]);
+			}
+		}
 		if(!isError){
 			client.zadd(hash, sets, function(err, res) {
 				callback(err, res);
@@ -89,8 +96,8 @@ module.exports = {
 			callback(isError, null);
 		}
 	},
-	//设置数组
-	setArr:function(key,arr,callback){
+	//设置lists列表
+	setLists:function(key,arr,callback){
 		if(!isError){
 			client.del(key, function(error, response) {
 				client.rpush(key, arr, function(err, res) {
@@ -102,8 +109,8 @@ module.exports = {
 			callback(isError, null);
 		}
 	},
-	//向数组尾部添加新的数据
-	rpushArr:function(key,arr,callback){
+	//向lists尾部添加新的数据
+	rpushLists:function(key,arr,callback){
 		if(!isError){
 			client.rpush(key, arr, function(err, res) {
 				callback(err, res);
@@ -113,8 +120,8 @@ module.exports = {
 			callback(isError, null);
 		}
 	},
-	//向数组头部添加新的数据
-	lpushArr:function(key,arr,callback){
+	//向lists头部添加新的数据
+	lpushLists:function(key,arr,callback){
 		if(!isError){
 			client.lpush(key, arr, function(err, res) {
 				callback(err, res);
@@ -124,8 +131,8 @@ module.exports = {
 			callback(isError, null);
 		}
 	},
-	//获取数组
-	getArr:function(key,callback){
+	//获取lists
+	getLists:function(key,callback){
 		if(!isError){
 			client.lrange(key, 0, -1, function(err, res) {
 				callback(err, res);
