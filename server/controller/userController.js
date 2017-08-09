@@ -1,6 +1,7 @@
 var fs = require("fs"),
     dbHelper = require("../DBHelper/dbHelper"),
     uploadHelper = require("../DBHelper/uploadHelper"),
+    redisHelper = require("../DBHelper/redisHelper"),
     toolsController = require("./toolsController");
 
 /**  
@@ -204,6 +205,34 @@ module.exports = function(app){
         dbHelper.updateData('user_info',column,values,where,function(result){
             res.type('text/javascript');
             res.send(_callback + '(' + JSON.stringify(result) + ')');
+        });
+    });
+    //获取历史记录
+    app.all("/getHistoryAction",function(req,res){
+        var _callback = req.query.callback;
+        var result;
+        redisHelper.getSets('music_set_history',function(errR0,resR0){
+            if(errR0){
+                result = {'success':0,'flag':errR0};
+                res.type('text/javascript');
+                res.send(_callback + '(' + JSON.stringify(result) + ')');
+            }else{
+                var resArr = [];
+                resR0.forEach(function(key){
+                    redisHelper.getObj(key,function(errR1,resR1){
+                        if(errR1){
+                            result = {'success':0,'flag':errR1};
+                            res.type('text/javascript');
+                            res.send(_callback + '(' + JSON.stringify(result) + ')');
+                        }else{
+                            resArr.push(resR1);
+                        }
+                    });
+                });
+                result = {'success':1,'flag':'获取记录成功','result':resArr};
+                res.type('text/javascript');
+                res.send(_callback + '(' + JSON.stringify(result) + ')');
+            }
         });
     });
 }

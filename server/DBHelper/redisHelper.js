@@ -86,7 +86,7 @@ module.exports = {
 		}
 	},
 	//获取集合
-	setSets:function(hash,callback){
+	getSets:function(hash,callback){
 		if(!isError){
 			client.zrange(hash, 0, -1, function(err, res) {
 				callback(err, res);

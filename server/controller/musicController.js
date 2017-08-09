@@ -1,6 +1,7 @@
 var fs = require("fs"),
     dbHelper = require("../DBHelper/dbHelper"),
-    uploadHelper = require("../DBHelper/uploadHelper");
+    uploadHelper = require("../DBHelper/uploadHelper"),
+    redisHelper = require("../DBHelper/redisHelper");
 
 /**  
  * 提供操作表的公共路由，以供ajax访问  
@@ -23,9 +24,23 @@ module.exports = function(app){
         }
         dbHelper.findData('music',column,where,fields,function(result){
             if(req.query.id){
-                result.result.forEach(function(obj){
-                    obj.lyric = getFileContent(obj.lyric);
-                });
+                if(result.success == 1){
+                    result.result.forEach(function(obj){
+                        obj.lyric = getFileContent(obj.lyric);
+                    });
+                    redisHelper.setObj('music_obj_'+result.result[0].id,result.result[0],function(errR0,resR0){
+                        var keys = ['music_obj_'+result.result[0].id];
+                        if(!errR0){
+                            redisHelper.setSets('music_set_history',keys,function(errR1,resR1){
+                                if(errR1){
+                                    console.log(errR1);
+                                }
+                            });
+                        }else{
+                            console.log(errR0);
+                        }
+                    });
+                }
             }
             res.type('text/javascript');
             res.send(_callback + '(' + JSON.stringify(result) + ')');
