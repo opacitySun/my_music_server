@@ -243,7 +243,7 @@ module.exports = function(app){
                     //         listArr.push(list[i]);
                     //     }
                     // }
-                    result = {'success':1,'flag':'获取记录成功','result':listArr};
+                    result = {'success':1,'flag':'获取记录成功','result':list};
                     res.type('text/javascript');
                     res.send(_callback + '(' + JSON.stringify(result) + ')');
                 });
