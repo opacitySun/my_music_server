@@ -45,7 +45,6 @@ module.exports = function(app){
                     });
                 }
             }
-            redisHelper.delKey('history',function(){});
             res.type('text/javascript');
             res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
