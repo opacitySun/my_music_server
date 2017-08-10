@@ -231,7 +231,7 @@ module.exports = function(app){
                             result = {'success':0,'flag':'获取hash对象失败'};
                             res.type('text/javascript');
                             res.send(_callback + '(' + JSON.stringify(result) + ')');
-                            break;
+                            return false;
                         }else{
                             ep.emit('getAllHistoryData', resR1);
                         }
