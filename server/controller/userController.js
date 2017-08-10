@@ -235,7 +235,7 @@ module.exports = function(app){
                             }
                         }
                     }
-                    result = {'success':1,'flag':'获取记录成功','result':list};
+                    result = {'success':1,'flag':'获取记录成功','result':listArr};
                     res.type('text/javascript');
                     res.send(_callback + '(' + JSON.stringify(result) + ')');
                 });
