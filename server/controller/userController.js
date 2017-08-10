@@ -1,4 +1,6 @@
 var fs = require("fs"),
+    eventproxy = require("eventproxy"),
+    ep = new eventproxy(),
     dbHelper = require("../DBHelper/dbHelper"),
     uploadHelper = require("../DBHelper/uploadHelper"),
     redisHelper = require("../DBHelper/redisHelper"),
@@ -217,21 +219,21 @@ module.exports = function(app){
                 res.type('text/javascript');
                 res.send(_callback + '(' + JSON.stringify(result) + ')');
             }else{
-                var resArr = [];
                 resR0 = resR0.sort(function(a,b){return b-a});
+                ep.after('getAllHistoryData', resR0.length, function (list) {
+                    result = {'success':1,'flag':'获取记录成功','result':list};
+                    res.type('text/javascript');
+                    res.send(_callback + '(' + JSON.stringify(result) + ')');
+                });
                 for(var i=0;i<resR0.length;i++){
                     redisHelper.getObj(resR0[i],function(errR1,resR1){
                         if(errR1){
                             result = {'success':0,'flag':'获取hash对象失败'};
                             res.type('text/javascript');
                             res.send(_callback + '(' + JSON.stringify(result) + ')');
+                            break;
                         }else{
-                            resArr.push(resR1);
-                            if(i == resR0.length-1){
-                                result = {'success':1,'flag':'获取记录成功','result':resArr};
-                                res.type('text/javascript');
-                                res.send(_callback + '(' + JSON.stringify(result) + ')');
-                            }
+                            ep.emit('getAllHistoryData', resR1);
                         }
                     });
                 }       
