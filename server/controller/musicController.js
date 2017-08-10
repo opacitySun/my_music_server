@@ -3,17 +3,17 @@ var fs = require("fs"),
     uploadHelper = require("../DBHelper/uploadHelper"),
     redisHelper = require("../DBHelper/redisHelper");
 
+var getFileContent = function(path){
+    path = "./public/files/"+path;
+    var content = fs.readFileSync(path,"utf-8");
+    return content;
+};
+
 /**  
  * 提供操作表的公共路由，以供ajax访问  
  * @returns {Function}  
  */ 
 module.exports = function(app){
-    var getFileContent = function(path){
-        path = "./public/files/"+path;
-        var content = fs.readFileSync(path,"utf-8");
-        return content;
-    };
-
     //查找音乐列表
     app.all("/getMusicList",function(req,res){
         var _callback = req.query.callback;
@@ -29,7 +29,9 @@ module.exports = function(app){
                         obj.lyric = getFileContent(obj.lyric);
                     });
                     var this_time = new Date().getTime();
-                    redisHelper.setObj(""+this_time,result.result[0],function(errR0,resR0){
+                    var setObj = result.result[0];
+                    setObj['visittime'] = this_time;
+                    redisHelper.setObj(""+this_time,setObj,function(errR0,resR0){
                         var keys = [this_time];
                         if(!errR0){
                             redisHelper.setSets('history',keys,function(errR1,resR1){

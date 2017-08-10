@@ -1,5 +1,5 @@
 var fs = require("fs"),
-    eventproxy = require("eventproxy"),
+    eventproxy = require("eventproxy"), //同步执行控件
     ep = new eventproxy(),
     dbHelper = require("../DBHelper/dbHelper"),
     uploadHelper = require("../DBHelper/uploadHelper"),
@@ -221,6 +221,20 @@ module.exports = function(app){
             }else{
                 resR0 = resR0.sort(function(a,b){return b-a});
                 ep.after('getAllHistoryData', resR0.length, function (list) {
+                    var listArr = [];
+                    for(var i=0;i<list.length;i++){
+                        if(listArr.length > 0){
+                            for(var j=0;j<listArr.length;j++){
+                                if(listArr[j].name == list[i].name && listArr[j].createtime == list[i].createtime && listArr[j].updatetime == list[i].updatetime){
+                                    if(list[i].visittime > listArr[j].visittime){
+                                        listArr.splice(j,1);
+                                        listArr.push(list[i]);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     result = {'success':1,'flag':'获取记录成功','result':list};
                     res.type('text/javascript');
                     res.send(_callback + '(' + JSON.stringify(result) + ')');

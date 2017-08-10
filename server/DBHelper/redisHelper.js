@@ -1,7 +1,7 @@
 var redis = require('redis'),
 	RDS_PORT = 6379,        //端口号
     RDS_HOST = '127.0.0.1',    //服务器IP
-    RDS_PWD = 'xJmcMhmgGoYlcA69',
+    RDS_PWD = 'xJmcMhmgGoYlcA69',	//redis密码
     RDS_OPTS = {auth_pass:RDS_PWD},   //设置项
     client = redis.createClient(RDS_PORT,RDS_HOST,RDS_OPTS);
 
@@ -137,6 +137,16 @@ module.exports = {
 			client.lrange(key, 0, -1, function(err, res) {
 				callback(err, res);
 				//client.quit();
+			});
+		}else{
+			callback(isError(), null);
+		}
+	},
+	//删除存储的key
+	delKey:function(key,callback){
+		if(!isError()){
+			client.del(key, function(err, res) {
+				callback(err, res);
 			});
 		}else{
 			callback(isError(), null);
