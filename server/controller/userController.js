@@ -229,10 +229,13 @@ module.exports = function(app){
                                     if(list[i].visittime > listArr[j].visittime){
                                         listArr.splice(j,1);
                                         listArr.push(list[i]);
-                                        break;
                                     }
+                                }else{
+                                    listArr.push(list[i]);
                                 }
                             }
+                        }else{
+                            listArr.push(list[i]);
                         }
                     }
                     result = {'success':1,'flag':'获取记录成功','result':listArr};
