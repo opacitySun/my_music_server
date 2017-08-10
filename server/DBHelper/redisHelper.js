@@ -96,6 +96,17 @@ module.exports = {
 			callback(isError(), null);
 		}
 	},
+	//删除集合
+	delSets:function(hash,start,end,callback){
+		if(!isError()){
+			client.zrem(hash, start, end, function(err, res) {
+				callback(err, res);
+				//client.quit();
+			});
+		}else{
+			callback(isError(), null);
+		}
+	},
 	//设置lists列表
 	setLists:function(key,arr,callback){
 		if(!isError()){

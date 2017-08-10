@@ -31,8 +31,8 @@ module.exports = function(app){
                     var this_time = new Date().getTime();
                     var setObj = result.result[0];
                     setObj['visittime'] = this_time;
-                    redisHelper.setObj(""+this_time,setObj,function(errR0,resR0){
-                        var keys = [this_time];
+                    redisHelper.setObj('music_'+setObj.id,setObj,function(errR0,resR0){
+                        var keys = ['music_'+setObj.id];
                         if(!errR0){
                             redisHelper.setSets('history',keys,function(errR1,resR1){
                                 if(errR1){
@@ -45,6 +45,7 @@ module.exports = function(app){
                     });
                 }
             }
+            redisHelper.delKey('history',function(){});
             res.type('text/javascript');
             res.send(_callback + '(' + JSON.stringify(result) + ')');
         });

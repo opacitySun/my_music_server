@@ -219,25 +219,30 @@ module.exports = function(app){
                 res.type('text/javascript');
                 res.send(_callback + '(' + JSON.stringify(result) + ')');
             }else{
-                resR0 = resR0.sort(function(a,b){return b-a});
+                if(resR0.length > 100){
+                    var dvalue = resR0.length - 100;
+                    resR0.splice(0,dvalue);
+                    redisHelper.delSets('history',0,dvalue,function(e,r){});
+                }
+                resR0 = resR0.sort(function(a,b){return b.visittime-a.visittime});
                 ep.after('getAllHistoryData', resR0.length, function (list) {
-                    var listArr = [];
-                    for(var i=0;i<list.length;i++){
-                        if(listArr.length > 0){
-                            for(var j=0;j<listArr.length;j++){
-                                if(listArr[j].id == list[i].id && listArr[j].name == list[i].name && listArr[j].createtime == list[i].createtime && listArr[j].updatetime == list[i].updatetime){
-                                    if(list[i].visittime > listArr[j].visittime){
-                                        listArr.splice(j,1);
-                                        listArr.push(list[i]);
-                                    }
-                                }else{
-                                    listArr.push(list[i]);
-                                }
-                            }
-                        }else{
-                            listArr.push(list[i]);
-                        }
-                    }
+                    // var listArr = [];
+                    // for(var i=0;i<list.length;i++){
+                    //     if(listArr.length > 0){
+                    //         for(var j=0;j<listArr.length;j++){
+                    //             if(listArr[j].id == list[i].id && listArr[j].name == list[i].name && listArr[j].createtime == list[i].createtime && listArr[j].updatetime == list[i].updatetime){
+                    //                 if(list[i].visittime > listArr[j].visittime){
+                    //                     listArr.splice(j,1);
+                    //                     listArr.push(list[i]);
+                    //                 }
+                    //             }else{
+                    //                 listArr.push(list[i]);
+                    //             }
+                    //         }
+                    //     }else{
+                    //         listArr.push(list[i]);
+                    //     }
+                    // }
                     result = {'success':1,'flag':'获取记录成功','result':listArr};
                     res.type('text/javascript');
                     res.send(_callback + '(' + JSON.stringify(result) + ')');
