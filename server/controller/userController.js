@@ -225,7 +225,7 @@ module.exports = function(app){
                     for(var i=0;i<list.length;i++){
                         if(listArr.length > 0){
                             for(var j=0;j<listArr.length;j++){
-                                if(listArr[j].name == list[i].name && listArr[j].createtime == list[i].createtime && listArr[j].updatetime == list[i].updatetime){
+                                if(listArr[j].id == list[i].id && listArr[j].name == list[i].name && listArr[j].createtime == list[i].createtime && listArr[j].updatetime == list[i].updatetime){
                                     if(list[i].visittime > listArr[j].visittime){
                                         listArr.splice(j,1);
                                         listArr.push(list[i]);
