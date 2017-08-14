@@ -262,4 +262,15 @@ module.exports = function(app){
             }
         });
     });
+    //查找系统通知
+    app.all("/getNoticeListActive",function(req,res){
+        var _callback = req.query.callback;
+        var column = false,where = false;
+        var fields = {};
+        var result = {};
+        dbHelper.findData('notice',column,where,fields,function(result){
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+        });
+    });
 }
