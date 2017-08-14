@@ -273,4 +273,16 @@ module.exports = function(app){
             res.send(_callback + '(' + JSON.stringify(result) + ')');
         });
     });
+    //查找系统通知详情
+    app.all("/getNoticeByIdActive",function(req,res){
+        var _callback = req.query.callback,
+            id = req.query.id;
+        var column = false,where = 'id='+id;
+        var fields = {};
+        var result = {};
+        dbHelper.findData('notice',column,where,fields,function(result){
+            res.type('text/javascript');
+            res.send(_callback + '(' + JSON.stringify(result) + ')');
+        });
+    });
 }
