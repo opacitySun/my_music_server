@@ -45,8 +45,12 @@ module.exports = function(app){
                     });
                 }
             }
-            res.type('text/javascript');
-            res.send(_callback + '(' + JSON.stringify(result) + ')');
+            if(req.query && _callback){
+                res.type('text/javascript');
+                res.send(_callback + '(' + JSON.stringify(result) + ')');
+            }else{
+                res.send(JSON.stringify(result));
+            }
         });
     });
 
