@@ -11,8 +11,8 @@ var https = require('https');
 var fs = require('fs');
 
 //根据项目的路径导入生成的证书文件  
-var privateKey  = fs.readFileSync(path.join(__dirname, './certificate/private.pem'), 'utf8'),
-    certificate = fs.readFileSync(path.join(__dirname, './certificate/file.crt'), 'utf8'),
+var privateKey  = fs.readFileSync('../certificate/private.pem', 'utf8'),
+    certificate = fs.readFileSync('../certificate/file.crt', 'utf8'),
     credentials = {key: privateKey, cert: certificate};
 var httpServer = http.createServer(app),
     httpsServer = https.createServer(credentials, app);
