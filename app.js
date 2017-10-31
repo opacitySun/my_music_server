@@ -1,18 +1,18 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var ejs = require('ejs');
-var expressSession = require('express-session');
-var redisStore = require('connect-redis')(expressSession);
-var partials = require('express-partials');
-var nodexcn = require('nodexcn');
-var ueditor = require("ueditor");
+var express = require('express'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    ejs = require('ejs'),
+    expressSession = require('express-session'),
+    redisStore = require('connect-redis')(expressSession),
+    partials = require('express-partials'),
+    nodexcn = require('nodexcn'),
+    ueditor = require("ueditor");
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./routes/index'),
+    users = require('./routes/users');
 
 var routesController = require('./server/controller/routesController'),
     toolsController = require('./server/controller/toolsController');
