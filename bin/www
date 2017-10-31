@@ -33,7 +33,7 @@ httpsServer.listen(SSLPORT, function() {
     console.log('HTTPS Server is running on: https://localhost:%s', SSLPORT);  
 });
 httpsServer.on('error', onError);
-httpsServer.on('listening', onListening);
+httpsServer.on('listening', onHttpsListening);
 
 /**
  * Get port from environment and store in Express.
@@ -109,7 +109,15 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
+  var addr = httpServer.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+function onHttpsListening() {
+  var addr = httpsServer.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
